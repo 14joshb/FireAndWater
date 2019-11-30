@@ -20,6 +20,7 @@ using namespace std;
 
 particle_system p(NUMBER_OF_PARTICLES);
 float win_width = 400, win_height = 400;
+GLuint tex;
 
 //Called when a key is pressed
 void handle_keypress(unsigned char key, int x, int y)
@@ -60,6 +61,18 @@ void init()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
+uint initTex(char* c) {
+	int width = 280;
+	int height = 280;
+	glGenTextures(1, &tex);
+	glBindTexture(GL_TEXTURE_2D, tex);
+	unsigned char* image = SOIL_load_image("fire.jpeg", &width, &height, 0, SOIL_LOAD_RGBA);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+
+}
+
 
 //Called when the window is resized
 void handle_resize(int w, int h)
@@ -91,7 +104,7 @@ void draw()
 	glPushMatrix();
 		p.advance(DELTA);
 		p.delete_particle();
-		p.draw();
+		p.draw(tex);
 	glPopMatrix();
 
 	//Draw overlaying quad for trail
@@ -132,11 +145,14 @@ int main(int argc, char** argv)
     glutCreateWindow("Particle System");
     init();
 
+    tex = initTex("do");
+
     //Set handler functions for drawing, keypresses, and window resizes
 	glutDisplayFunc(draw);
     glutKeyboardFunc(handle_keypress);
     glutReshapeFunc(handle_resize);
 	glutPassiveMotionFunc(mouse_movement);
+
 
     
 	glutMainLoop();

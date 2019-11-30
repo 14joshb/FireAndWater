@@ -3,7 +3,7 @@
 //constants
 
 const float DELTA = 1;
-const int NUMBER_OF_PARTICLES = 65536;
+const int NUMBER_OF_PARTICLES = 3000;
 const float LENGTH = 100.0;
 
 const int MIN_INIT_VELOCITY = 10;

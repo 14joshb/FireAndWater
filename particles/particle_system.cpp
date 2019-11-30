@@ -1,6 +1,7 @@
 #include "particle_system.h"
 #include <GL/glut.h>
 #include <math.h>
+#include "soil.h"
 
 particle_system::particle_system(int n)
 {
@@ -72,20 +73,31 @@ bool particle_system :: delete_particle()
 	return true;
 }
 
+
 //Function to draw a particle
-void particle_system::draw()
+void particle_system::draw(uint tex)
 {
+	
 	vector<particle>::iterator it;
 	for(it = particles.begin(); it != particles.end(); it++){
 		vec3d pos = it->get_pos();
 		float k = abs(pos.x)/(.5*LENGTH);
-		float k2 = abs(pos.y)/(1.5*LENGTH);
-		glColor4f(1, 1 - k, .3 - .3*k2, 1);
-		glBegin(GL_TRIANGLES);
-			glVertex3f(pos.x - .5, pos.y - .5, pos.z);
-			glVertex3f(pos.x + .5, pos.y - .5, pos.z);
-			glVertex3f(pos.x, pos.y + 1, pos.z);
+		float k2 = abs(pos.y)/(LENGTH);
+		glColor4f(1, 1, 1, 1 - k2);
+		glEnable(GL_TEXTURE_2D);
+  		glBindTexture(GL_TEXTURE_2D, tex);
+  		float diff = .75;
+		glBegin(GL_QUADS);
+			glTexCoord2f(0.0, 0.0);
+			glVertex3f(pos.x, pos.y - diff, pos.z);
+			glTexCoord2f(1.0, 0.0);
+			glVertex3f(pos.x + diff, pos.y, pos.z);
+			glTexCoord2f(1.0, 1.0);
+			glVertex3f(pos.x, pos.y + diff, pos.z);
+			glTexCoord2f(0.0, 1.0);
+			glVertex3f(pos.x - diff, pos.y, pos.z);
 		glEnd();
+
 	}
 }
 

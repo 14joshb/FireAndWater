@@ -13,7 +13,7 @@ particle::particle(float _mass, vec3d _velocity, vec3d _position) : mass(_mass),
 	float random2 = rand_float();
 	position.x = cos(2 * PI * random) * 100 * random2;
 	position.y = sin(2 * PI * random) * 5 * random2 - 80;
-	life = (100 - abs(position.x)) + rand_float() * 200;
+	life = (200 - 3*abs(position.x)) + rand_float() * 100;
 }
 
 //function to advance state by time t in ms
